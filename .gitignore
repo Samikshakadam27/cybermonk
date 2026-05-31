@@ -1,0 +1,5 @@
+# Secret keys — never share or upload this
+.env
+
+# Auto-generated — no need to share
+node_modules/

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberMonk — Is this message a scam?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── LIGHT (default) ── */
+    [data-theme="light"] {
+      --bg:           #f4f6fb;
+      --surface:      #ffffff;
+      --surface2:     #f0f2f8;
+      --surface3:     #e8ebf4;
+      --border:       rgba(60,80,160,0.10);
+      --border2:      rgba(60,80,160,0.18);
+      --text:         #0f1623;
+      --text2:        #4a5568;
+      --text3:        #9aa5b8;
+      --blue:         #2563eb;
+      --blue-light:   #eff4ff;
+      --blue-border:  rgba(37,99,235,0.20);
+      --blue-text:    #1d4ed8;
+      --danger-bg:    #fff5f5;
+      --danger-bd:    rgba(220,38,38,0.20);
+      --danger-text:  #b91c1c;
+      --danger-fill:  #dc2626;
+      --warning-bg:   #fffbeb;
+      --warning-bd:   rgba(180,120,0,0.20);
+      --warning-text: #92400e;
+      --warning-fill: #d97706;
+      --success-bg:   #f0fdf4;
+      --success-bd:   rgba(22,163,74,0.20);
+      --success-text: #166534;
+      --success-fill: #16a34a;
+    }
+
+    /* ── DARK ── */
+    [data-theme="dark"] {
+      --bg:           #111827;
+      --surface:      #1f2937;
+      --surface2:     #283040;
+      --surface3:     #374151;
+      --border:       rgba(99,130,255,0.12);
+      --border2:      rgba(99,130,255,0.20);
+      --text:         #f1f5f9;
+      --text2:        #94a3b8;
+      --text3:        #4b5563;
+      --blue:         #6384ff;
+      --blue-light:   rgba(99,132,255,0.10);
+      --blue-border:  rgba(99,132,255,0.25);
+      --blue-text:    #93a8ff;
+      --danger-bg:    rgba(220,38,38,0.10);
+      --danger-bd:    rgba(220,38,38,0.25);
+      --danger-text:  #fca5a5;
+      --danger-fill:  #ef4444;
+      --warning-bg:   rgba(217,119,6,0.10);
+      --warning-bd:   rgba(217,119,6,0.25);
+      --warning-text: #fcd34d;
+      --warning-fill: #f59e0b;
+      --success-bg:   rgba(22,163,74,0.10);
+      --success-bd:   rgba(22,163,74,0.25);
+      --success-text: #86efac;
+      --success-fill: #22c55e;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border2);
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-mark { width: 38px; height: 38px; flex-shrink: 0; }
+    .logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .logo-name {
+      font-family: 'Cinzel', serif;
+      font-size: 17px; font-weight: 700;
+      color: var(--text); letter-spacing: 0.5px;
+    }
+    .logo-name .c1 { color: var(--blue); }
+    .logo-sub {
+      font-size: 10px; color: var(--text3);
+      letter-spacing: 0.5px; margin-top: 3px;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    .online-badge {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 500; color: var(--success-text);
+      background: var(--success-bg);
+      border: 1px solid var(--success-bd);
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .online-badge::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--success-fill);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* theme toggle */
+    .toggle-wrap {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--text3); cursor: pointer;
+      padding: 6px 10px; border-radius: 8px;
+      border: 1px solid var(--border2);
+      background: var(--surface2);
+      transition: background 0.15s;
+    }
+    .toggle-wrap:hover { background: var(--surface3); }
+    .toggle-wrap i { font-size: 15px; color: var(--text2); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 24px 52px;
+      text-align: center;
+    }
+
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--blue-light);
+      border: 1px solid var(--blue-border);
+      color: var(--blue-text);
+      font-size: 12px; font-weight: 500;
+      padding: 5px 14px; border-radius: 20px;
+      margin-bottom: 22px;
+    }
+    .hero-chip i { font-size: 14px; }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 600; line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+    .hero h1 span { color: var(--blue); }
+
+    .hero-desc {
+      font-size: 16px; color: var(--text2);
+      max-width: 480px; margin: 0 auto 32px;
+      line-height: 1.75;
+    }
+
+    .trust-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 28px; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: var(--text2); font-weight: 500;
+    }
+    .trust-item i { font-size: 16px; color: var(--blue); }
+
+    /* ── PAGE ── */
+    .page { max-width: 760px; margin: 0 auto; padding: 36px 20px 80px; }
+
+    /* ── TABS ── */
+    .tab-bar {
+      display: flex; gap: 4px; margin-bottom: 24px;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 4px;
+    }
+    .tab-btn {
+      flex: 1; padding: 9px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 500;
+      color: var(--text2); background: transparent;
+      border: none; border-radius: 9px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { color: var(--text); background: var(--surface2); }
+    .tab-btn.active {
+      color: var(--blue);
+      background: var(--blue-light);
+      font-weight: 600;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      padding: 24px; margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .card-label {
+      font-size: 12px; font-weight: 600; color: var(--text3);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+
+    /* ── INPUT ── */
+    textarea#msg {
+      width: 100%; min-height: 160px; resize: vertical;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; line-height: 1.75; color: var(--text);
+      background: var(--surface2);
+      border: 1.5px solid var(--border2);
+      border-radius: 12px; padding: 14px 16px; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    textarea#msg:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-light);
+      background: var(--surface);
+    }
+    textarea#msg::placeholder { color: var(--text3); }
+
+    .url-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .url-icon { color: var(--text3); font-size: 18px; flex-shrink: 0; }
+    input#url {
+      flex: 1; font-family: 'Inter', sans-serif;
+      font-size: 13px; color: var(--text);
+      background: var(--surface2);
+      border: 1.5px solid var(--border2); border-radius: 10px;
+      padding: 9px 13px; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input#url:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-light);
+      background: var(--surface);
+    }
+    input#url::placeholder { color: var(--text3); }
+
+    .char-count { text-align: right; font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+    .action-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+
+    .btn-primary {
+      padding: 12px 28px;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.15s, transform 0.1s;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .btn-ghost {
+      padding: 11px 18px; background: transparent;
+      border: 1.5px solid var(--border2); border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: var(--text2);
+      cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      transition: background 0.12s;
+    }
+    .btn-ghost:hover { background: var(--surface2); }
+
+    .shortcut-hint { font-size: 11px; color: var(--text3); margin-left: auto; }
+    kbd {
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 4px; padding: 1px 5px; font-size: 10px;
+    }
+
+    /* ── EXAMPLES ── */
+    .examples-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .example-chip {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border2);
+      border-radius: 20px;
+      font-size: 13px; font-weight: 500;
+      color: var(--text2); cursor: pointer;
+      transition: all 0.12s;
+    }
+    .example-chip:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-light);
+    }
+    .example-chip i { font-size: 15px; }
+
+    /* ── LOADING ── */
+    #loading { display: none; text-align: center; padding: 52px 20px; }
+    .spinner {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 3px solid var(--border2);
+      border-top-color: var(--blue);
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .loading-sub { font-size: 13px; color: var(--text2); }
+
+    /* ── RESULT ── */
+    #result { animation: riseIn 0.3s ease; }
+    @keyframes riseIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    /* verdict card */
+    .verdict-card {
+      border-radius: 16px; border: 1px solid; padding: 24px; margin-bottom: 14px;
+    }
+    .verdict-card.danger  { background: var(--danger-bg);  border-color: var(--danger-bd); }
+    .verdict-card.warning { background: var(--warning-bg); border-color: var(--warning-bd); }
+    .verdict-card.success { background: var(--success-bg); border-color: var(--success-bd); }
+
+    .verdict-top { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+
+    .verdict-icon {
+      width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .danger  .verdict-icon { background: rgba(220,38,38,0.12); }
+    .warning .verdict-icon { background: rgba(217,119,6,0.12); }
+    .success .verdict-icon { background: rgba(22,163,74,0.12); }
+    .verdict-icon i { font-size: 28px; }
+    .danger  .verdict-icon i { color: var(--danger-text); }
+    .warning .verdict-icon i { color: var(--warning-text); }
+    .success .verdict-icon i { color: var(--success-text); }
+
+    .verdict-info { flex: 1; }
+    .verdict-label {
+      font-size: 20px; font-weight: 700; line-height: 1.1; margin-bottom: 3px;
+    }
+    .danger  .verdict-label { color: var(--danger-text); }
+    .warning .verdict-label { color: var(--warning-text); }
+    .success .verdict-label { color: var(--success-text); }
+    .verdict-type { font-size: 13px; color: var(--text2); font-weight: 500; }
+
+    .score-pill {
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 13px; font-weight: 700; white-space: nowrap;
+      border: 1.5px solid;
+    }
+    .danger  .score-pill { color: var(--danger-text);  border-color: var(--danger-bd);  background: var(--danger-bg); }
+    .warning .score-pill { color: var(--warning-text); border-color: var(--warning-bd); background: var(--warning-bg); }
+    .success .score-pill { color: var(--success-text); border-color: var(--success-bd); background: var(--success-bg); }
+
+    .verdict-summary { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 16px; }
+
+    .risk-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-bottom: 6px; font-weight: 500; }
+    .risk-track { height: 6px; border-radius: 3px; background: rgba(0,0,0,0.08); overflow: hidden; }
+    [data-theme="dark"] .risk-track { background: rgba(255,255,255,0.08); }
+    .risk-fill { height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(.4,0,.2,1); }
+    .danger  .risk-fill { background: var(--danger-fill); }
+    .warning .risk-fill { background: var(--warning-fill); }
+    .success .risk-fill { background: var(--success-fill); }
+
+    /* signals */
+    .signals { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-bottom: 14px; }
+    @media(max-width:600px){ .signals { grid-template-columns: 1fr 1fr; } }
+
+    .sig-card {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 12px;
+    }
+    .sig-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .sig-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .sig-dot.red   { background: var(--danger-fill); }
+    .sig-dot.amber { background: var(--warning-fill); }
+    .sig-dot.green { background: var(--success-fill); }
+    .sig-name { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.3; }
+    .sig-val { font-size: 12px; font-weight: 600; }
+    .sig-val.red   { color: var(--danger-text); }
+    .sig-val.amber { color: var(--warning-text); }
+    .sig-val.green { color: var(--success-text); }
+
+    /* findings */
+    .findings {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 20px; margin-bottom: 14px;
+    }
+    .findings-label {
+      font-size: 12px; font-weight: 600; color: var(--text2);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .findings-label i { font-size: 15px; }
+    .finding {
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-bottom: 10px; font-size: 14px; line-height: 1.6; color: var(--text);
+    }
+    .finding:last-child { margin-bottom: 0; }
+    .finding i { font-size: 17px; margin-top: 1px; flex-shrink: 0; }
+    .finding.bad  i { color: var(--danger-text); }
+    .finding.good i { color: var(--success-text); }
+    .divider { height: 1px; background: var(--border); margin: 14px 0; }
+
+    /* advice */
+    .advice {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 18px 20px; margin-bottom: 14px;
+      display: flex; gap: 14px;
+    }
+    .advice-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      background: var(--blue-light); border: 1px solid var(--blue-border);
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .advice-icon i { font-size: 18px; color: var(--blue); }
+    .advice-body strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .advice-body { font-size: 14px; color: var(--text2); line-height: 1.7; }
+    .helpline {
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-top: 10px;
+      background: var(--danger-bg); border: 1px solid var(--danger-bd);
+      border-radius: 8px; padding: 7px 14px;
+      font-size: 13px; font-weight: 600; color: var(--danger-text);
+    }
+    .helpline i { font-size: 15px; }
+
+    /* ── HISTORY ── */
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .hist-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 16px; background: var(--surface2);
+      border-radius: 12px; border: 1px solid var(--border);
+      font-size: 13px; transition: border-color 0.12s;
+    }
+    .hist-row:hover { border-color: var(--blue-border); }
+    .hist-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+    }
+    .hist-badge.danger  { background: var(--danger-bg);  color: var(--danger-text);  border: 1px solid var(--danger-bd); }
+    .hist-badge.warning { background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning-bd); }
+    .hist-badge.success { background: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-bd); }
+    .hist-preview { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text2); }
+    .hist-time { font-size: 11px; color: var(--text3); white-space: nowrap; }
+
+    /* ── TIPS ── */
+    .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .tip {
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 18px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .tip:hover { border-color: var(--blue-border); box-shadow: 0 2px 12px rgba(37,99,235,0.08); }
+    .tip-icon {
+      width: 38px; height: 38px; border-radius: 10px; margin-bottom: 12px;
+      background: var(--blue-light); border: 1px solid var(--blue-border);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tip-icon i { font-size: 19px; color: var(--blue); }
+    .tip-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+    .tip-desc  { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+    .helpline-card { text-align: center; padding: 40px 20px; }
+    .hl-eyebrow { font-size: 13px; color: var(--text2); margin-bottom: 10px; }
+    .hl-number {
+      font-family: 'Cinzel', serif;
+      font-size: 60px; font-weight: 700;
+      color: var(--danger-text); letter-spacing: 4px;
+      line-height: 1; margin-bottom: 10px;
+    }
+    .hl-sub { font-size: 13px; color: var(--text3); }
+    .hl-sub a { color: var(--text2); text-decoration: none; }
+    .hl-sub a:hover { color: var(--blue); }
+
+    /* ── EMPTY ── */
+    .empty { text-align: center; padding: 48px 20px; color: var(--text3); font-size: 14px; }
+    .empty i { font-size: 36px; display: block; margin-bottom: 12px; opacity: 0.35; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border2);
+      padding: 28px 24px; text-align: center;
+    }
+    .footer-logo {
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;
+    }
+    .footer-brand {
+      font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700;
+      color: var(--text2); letter-spacing: 0.5px;
+    }
+    .footer-brand .c1 { color: var(--blue); }
+    .footer-line { height: 1px; width: 40px; background: var(--border2); margin: 10px auto; }
+    .footer-by { font-size: 13px; color: var(--text2); margin-bottom: 6px; }
+    .footer-by strong { color: var(--blue-text); font-weight: 600; }
+    .footer-links { font-size: 12px; color: var(--text3); }
+    .footer-links a { color: var(--text2); text-decoration: none; }
+    .footer-links a:hover { color: var(--blue); }
+    .footer-quote { font-size: 12px; color: var(--text3); font-style: italic; margin-top: 8px; }
+
+    @media(max-width:520px){
+      header { padding: 0 16px; }
+      .page  { padding: 24px 14px 60px; }
+      .hero  { padding: 36px 16px 32px; }
+      .online-badge span { display: none; }
+      .score-pill { display: none; }
+      .tab-btn span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <svg class="logo-mark" viewBox="0 0 38 38" fill="none">
+      <!-- shield -->
+      <path d="M19 3 L34 9 L34 21 C34 28 27.5 33.5 19 36 C10.5 33.5 4 28 4 21 L4 9 Z"
+            fill="var(--blue-light)" stroke="var(--blue)" stroke-width="1.5"/>
+      <!-- monk silhouette -->
+      <circle cx="19" cy="15" r="5" fill="var(--blue)" opacity="0.85"/>
+      <path d="M12 27 Q13.5 20 19 19 Q24.5 20 26 27 Z" fill="var(--blue)" opacity="0.35"/>
+      <!-- check mark -->
+      <path d="M13 22 L17 26 L25 17" stroke="var(--blue)" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="logo-text">
+      <span class="logo-name"><span class="c1">Cyber</span>Monk</span>
+      <span class="logo-sub">Scam Detection</span>
+    </div>
+  </a>
+  <div class="header-right">
+    <div class="online-badge">
+      <span>Protected</span>
+    </div>
+    <div class="toggle-wrap" onclick="toggleTheme()">
+      <i class="ti ti-moon" id="theme-icon"></i>
+      <span id="theme-label">Dark</span>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-chip">
+    <i class="ti ti-shield-check"></i>
+    Free AI-powered protection for everyone
+  </div>
+  <h1>Got a suspicious message?<br><span>Let us check it for you.</span></h1>
+  <p class="hero-desc">
+    Paste any SMS, email, or WhatsApp message below. CyberMonk will tell you in seconds whether it's a scam — in simple, plain language.
+  </p>
+  <div class="trust-row">
+    <div class="trust-item"><i class="ti ti-clock"></i> Results in under 5 seconds</div>
+    <div class="trust-item"><i class="ti ti-lock"></i> Your message stays private</div>
+    <div class="trust-item"><i class="ti ti-currency-rupee"></i> Completely free</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('analyze', this)">
+      <i class="ti ti-shield-search"></i> <span>Check a message</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('history', this)">
+      <i class="ti ti-history"></i> <span>History</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('tips', this)">
+      <i class="ti ti-bulb"></i> <span>Stay safe</span>
+    </button>
+  </div>
+
+  <!-- ANALYZE -->
+  <div id="tab-analyze" class="tab-pane active">
+
+    <div class="card">
+      <div class="card-label">Paste the message you received</div>
+      <textarea id="msg" placeholder="Paste your SMS, email, or WhatsApp message here...&#10;&#10;Example: 'Your HDFC account will be blocked. Click here to update KYC immediately...'"></textarea>
+      <div class="char-count" id="char-count">0 / 5000</div>
+      <div class="url-row">
+        <i class="ti ti-link url-icon"></i>
+        <input id="url" type="text" placeholder="Paste any suspicious link here (optional)" />
+      </div>
+      <div class="action-row">
+        <button class="btn-primary" id="analyze-btn" onclick="runAnalysis()">
+          <i class="ti ti-shield-search"></i>
+          Check this message
+        </button>
+        <button class="btn-ghost" onclick="clearAll()">
+          <i class="ti ti-x"></i> Clear
+        </button>
+        <span class="shortcut-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Try an example</div>
+      <div class="examples-wrap">
+        <span class="example-chip" onclick="loadEx('otp')"><i class="ti ti-device-mobile"></i> OTP scam</span>
+        <span class="example-chip" onclick="loadEx('lottery')"><i class="ti ti-trophy"></i> Lottery win</span>
+        <span class="example-chip" onclick="loadEx('bank')"><i class="ti ti-building-bank"></i> Fake bank alert</span>
+        <span class="example-chip" onclick="loadEx('job')"><i class="ti ti-briefcase"></i> Fake job offer</span>
+        <span class="example-chip" onclick="loadEx('customs')"><i class="ti ti-package"></i> Customs scam</span>
+        <span class="example-chip" onclick="loadEx('investment')"><i class="ti ti-chart-line"></i> Investment scam</span>
+        <span class="example-chip" onclick="loadEx('legit')"><i class="ti ti-circle-check"></i> Legit message</span>
+      </div>
+    </div>
+
+    <div id="loading">
+      <div class="spinner"></div>
+      <div class="loading-title">Checking your message...</div>
+      <div class="loading-sub">Analyzing for scam patterns. This takes just a moment.</div>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="tab-history" class="tab-pane">
+    <div class="card">
+      <div class="card-label">Checks this session</div>
+      <div id="history-container">
+        <div class="empty"><i class="ti ti-history"></i>No checks yet. Paste a message above to get started.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div id="tab-tips" class="tab-pane">
+    <div class="card">
+      <div class="card-label">How to protect yourself</div>
+      <div class="tips-grid">
+        <div class="tip">
+          <div class="tip-icon"><i class="ti ti-lock"></i></div>
+          <div class="tip-title">Never share your OTP</div>
+          <div class="tip-desc">No bank, government body, or company will ever call and ask for your OTP or password.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon"><i class="ti ti-clock-exclamation"></i></div>
+          <div class="tip-title">Urgency is a warning sign</div>
+          <div class="tip-desc">"Act in 24 hours or your account will be blocked" is pressure to stop you thinking. Slow down.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon"><i class="ti ti-link"></i></div>
+          <div class="tip-title">Check links carefully</div>
+          <div class="tip-desc">Scammers use lookalike domains. <strong>hdfc-kyc.net</strong> is NOT <strong>hdfcbank.com</strong>.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon"><i class="ti ti-trophy"></i></div>
+          <div class="tip-title">No free money</div>
+          <div class="tip-desc">KBC prizes, lottery wins, and "earn ₹50,000/day" offers are almost always scams.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon"><i class="ti ti-phone-off"></i></div>
+          <div class="tip-title">Hang up and call back</div>
+          <div class="tip-desc">Got a suspicious call? Hang up. Find the official number yourself and call back to verify.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon"><i class="ti ti-shield-check"></i></div>
+          <div class="tip-title">When in doubt, check here</div>
+          <div class="tip-desc">Paste any message into CyberMonk before clicking any link or sharing any information.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card helpline-card">
+      <div class="hl-eyebrow">Received a cyber fraud? Report it immediately</div>
+      <div class="hl-number">1930</div>
+      <div class="hl-sub">National Cyber Crime Helpline &nbsp;·&nbsp; <a href="https://cybercrime.gov.in" target="_blank">cybercrime.gov.in</a></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg width="20" height="20" viewBox="0 0 38 38" fill="none">
+      <path d="M19 3 L34 9 L34 21 C34 28 27.5 33.5 19 36 C10.5 33.5 4 28 4 21 L4 9 Z"
+            fill="var(--blue-light)" stroke="var(--blue)" stroke-width="1.5"/>
+      <circle cx="19" cy="15" r="5" fill="var(--blue)" opacity="0.85"/>
+      <path d="M13 22 L17 26 L25 17" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <span class="footer-brand"><span class="c1">Cyber</span>Monk</span>
+  </div>
+  <div class="footer-line"></div>
+  <div class="footer-by">Crafted with care by <strong>Samiksha Kadam</strong></div>
+  <div class="footer-links">
+    Report fraud: <a href="https://cybercrime.gov.in" target="_blank">cybercrime.gov.in</a>
+    &nbsp;·&nbsp; Helpline: <strong>1930</strong>
+  </div>
+  <div class="footer-quote">"Awareness is the greatest shield."</div>
+</footer>
+
+<script>
+  /* ── Theme ── */
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('theme-icon').className  = isDark ? 'ti ti-moon' : 'ti ti-sun';
+    document.getElementById('theme-label').textContent = isDark ? 'Dark' : 'Light';
+  }
+
+  /* ── Examples ── */
+  const EXAMPLES = {
+    otp:        { msg: "Dear Customer, your SBI account has been temporarily suspended due to suspicious activity. To reactivate your account immediately, please share the OTP sent to your registered mobile number with our executive. Call us urgently at 9876543210. Failure to comply within 24 hours will result in permanent account closure.", url: "" },
+    lottery:    { msg: "Congratulations! Your mobile number has been selected in the KBC Lucky Draw 2024. You have won Rs. 25,00,000 (Twenty Five Lakhs). To claim your prize, send a copy of your Aadhaar card and pay Rs. 1,500 processing fee to account 8827364910. Contact: lucky.kbc2024@gmail.com", url: "" },
+    bank:       { msg: "Dear User, your HDFC NetBanking access will be blocked due to incomplete KYC verification. Update immediately by clicking the link below. Failure to update within 24 hrs will result in account freeze. — HDFC Bank Customer Care", url: "http://hdfc-kyc-update.net/secure-login" },
+    job:        { msg: "URGENT HIRING! Work from home opportunity. Earn Rs. 15,000 to 50,000 DAILY just by liking YouTube videos and rating products online. No experience needed. Guaranteed daily payment to your bank account. WhatsApp us NOW at +1-800-555-0199. Only 12 slots remaining!", url: "" },
+    customs:    { msg: "Your international parcel from United Kingdom is held at Mumbai Customs due to undeclared items. A clearance fee of Rs. 2,200 must be paid within 12 hours to avoid return. Please pay here to release your package.", url: "https://india-customs-clearance.xyz/pay?ref=IN8821" },
+    investment: { msg: "🚀 EXCLUSIVE INVESTMENT OPPORTUNITY! Join our WhatsApp group where expert traders share daily stock tips. Members are making 30-50% returns every month! Minimum investment Rs. 10,000. Money is 100% safe and guaranteed. Group closing in 2 hours. Click to join now!", url: "" },
+    legit:      { msg: "Hi, this is a reminder from Amazon India that your order #405-2918374 (boAt Rockerz 255 Pro+) has been shipped via Blue Dart. Your package is expected to arrive by Friday, May 30. Track your shipment at amazon.in/orders. Thank you for shopping with Amazon.", url: "" }
+  };
+
+  function loadEx(key) {
+    const ex = EXAMPLES[key];
+    document.getElementById('msg').value = ex.msg;
+    document.getElementById('url').value = ex.url;
+    updateCount();
+    document.getElementById('result').innerHTML = '';
+    document.getElementById('loading').style.display = 'none';
+    showTab('analyze', document.querySelector('.tab-btn'));
+    setTimeout(() => document.getElementById('msg').scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+  }
+
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+    if (name === 'history') renderHistory();
+  }
+
+  function updateCount() {
+    const len = document.getElementById('msg').value.length;
+    const el  = document.getElementById('char-count');
+    el.textContent = len + ' / 5000';
+    el.style.color = len > 4500 ? 'var(--danger-text)' : 'var(--text3)';
+  }
+  document.getElementById('msg').addEventListener('input', updateCount);
+
+  function clearAll() {
+    document.getElementById('msg').value = '';
+    document.getElementById('url').value = '';
+    document.getElementById('result').innerHTML = '';
+    document.getElementById('loading').style.display = 'none';
+    updateCount();
+  }
+
+  document.getElementById('msg').addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'Enter') runAnalysis();
+  });
+
+  let historyLog = [];
+
+  function renderHistory() {
+    const c = document.getElementById('history-container');
+    if (!historyLog.length) {
+      c.innerHTML = '<div class="empty"><i class="ti ti-history"></i>No checks yet. Paste a message above to get started.</div>';
+      return;
+    }
+    c.innerHTML = '<div class="history-list">' +
+      historyLog.map(h => `
+        <div class="hist-row">
+          <span class="hist-badge ${h.level}">${h.verdict}</span>
+          <span class="hist-preview">${h.preview}</span>
+          <span class="hist-time">${h.time}</span>
+        </div>`).join('') + '</div>';
+  }
+
+  async function runAnalysis() {
+    const msg = document.getElementById('msg').value.trim();
+    const url = document.getElementById('url').value.trim();
+    if (!msg) { document.getElementById('msg').focus(); return; }
+
+    const btn = document.getElementById('analyze-btn');
+    btn.disabled = true;
+    document.getElementById('result').innerHTML = '';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('loading').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    try {
+      const res = await fetch('/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, url: url || undefined })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        showError(data.error || 'Something went wrong. Please try again.');
+        return;
+      }
+
+      historyLog.unshift({
+        verdict: data.verdict,
+        level:   data.level,
+        preview: msg.slice(0, 65) + (msg.length > 65 ? '…' : ''),
+        time:    new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      renderResult(data);
+
+    } catch (err) {
+      showError('Could not connect. Make sure the server is running (node server.js in Command Prompt).');
+    } finally {
+      btn.disabled = false;
+      document.getElementById('loading').style.display = 'none';
+    }
+  }
+
+  function showError(msg) {
+    document.getElementById('result').innerHTML = `
+      <div class="card" style="text-align:center; padding: 32px 20px;">
+        <i class="ti ti-alert-triangle" style="font-size:32px; color:var(--warning-text); display:block; margin-bottom:12px;"></i>
+        <div style="font-size:14px; color:var(--text2); line-height:1.6;">${msg}</div>
+      </div>`;
+  }
+
+  function renderResult(r) {
+    const score = Math.min(100, Math.max(0, Math.round(r.risk_score)));
+    const icons = { danger: 'ti-shield-x', warning: 'ti-shield-exclamation', success: 'ti-shield-check' };
+    const signals = (r.signals || []).map(s => `
+      <div class="sig-card">
+        <div class="sig-top"><div class="sig-dot ${s.color}"></div><div class="sig-name">${s.name}</div></div>
+        <div class="sig-val ${s.color}">${s.value}</div>
+      </div>`).join('');
+    const bads = (r.red_flags || []).map(f => `<div class="finding bad"><i class="ti ti-circle-x"></i><span>${f}</span></div>`).join('');
+    const goods = (r.positive_signals || []).map(f => `<div class="finding good"><i class="ti ti-circle-check"></i><span>${f}</span></div>`).join('');
+
+    document.getElementById('result').innerHTML = `
+      <div class="verdict-card ${r.level}">
+        <div class="verdict-top">
+          <div class="verdict-icon"><i class="ti ${icons[r.level]}"></i></div>
+          <div class="verdict-info">
+            <div class="verdict-label">${r.verdict}</div>
+            <div class="verdict-type">${r.scam_type}</div>
+          </div>
+          <div class="score-pill">Risk: ${score}/100</div>
+        </div>
+        <div class="verdict-summary">${r.summary}</div>
+        <div class="risk-labels"><span>Risk level</span><span>${score} out of 100</span></div>
+        <div class="risk-track"><div class="risk-fill" id="risk-fill" style="width:0%"></div></div>
+      </div>
+
+      ${signals ? `<div class="signals">${signals}</div>` : ''}
+
+      ${(bads || goods) ? `<div class="findings">
+        ${bads ? `<div class="findings-label"><i class="ti ti-flag" style="color:var(--danger-text)"></i> Red flags found</div>${bads}` : ''}
+        ${bads && goods ? '<div class="divider"></div>' : ''}
+        ${goods ? `<div class="findings-label"><i class="ti ti-thumb-up" style="color:var(--success-text)"></i> Positive signs</div>${goods}` : ''}
+      </div>` : ''}
+
+      <div class="advice">
+        <div class="advice-icon"><i class="ti ti-info-circle"></i></div>
+        <div class="advice-body">
+          <strong>What should you do?</strong>
+          ${r.advice}
+          ${r.level === 'danger' ? `<div class="helpline"><i class="ti ti-phone"></i> Report to Cyber Crime Helpline: Call <strong>1930</strong></div>` : ''}
+        </div>
+      </div>`;
+
+    setTimeout(() => {
+      const fill = document.getElementById('risk-fill');
+      if (fill) fill.style.width = score + '%';
+    }, 80);
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+</body>
+</html>
