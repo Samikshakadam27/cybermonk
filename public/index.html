@@ -793,7 +793,7 @@
     document.getElementById('loading').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     try {
-      const res = await fetch('/analyze', {
+      const res = await fetch('https://cybermonk.onrender.com/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg, url: url || undefined })
